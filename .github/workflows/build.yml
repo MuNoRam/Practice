@@ -37,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ChessClockAPK
-          path: web-apps/timer-app/android/app/build/outputs/apk/debug/app-debug.apk
+          path: Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk

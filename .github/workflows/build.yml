@@ -27,7 +27,7 @@ jobs:
 
       - name: Install and Build App File
         run: |
-          cd web-apps/timer-app
+          cd Web Apps/Timer App
           npm install
           npx cap sync
           cd android

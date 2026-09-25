@@ -1,0 +1,24 @@
+name: Cloud Android Build
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers the build automatically whenever you create a version tag (e.g., v1.0)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up NodeJS Engine
+        uses: actions/setup-node@v4
+        with:
+          node-size: 18
+
+      - name: Build and Package App Bundle
+        uses: henryhale/android-capacitor@v3
+        with:
+          # Targets our exact sub-folder location inside the repository
+          project-dir: 'web-apps/timer-app'

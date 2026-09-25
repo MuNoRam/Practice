@@ -1,9 +1,11 @@
 name: Cloud Android Build
 
+# This opens up manual push triggers on the website dashboard
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - 'v*' # Triggers the build automatically whenever you create a version tag (e.g., v1.0)
+    branches:
+      - main
 
 jobs:
   build:
@@ -12,13 +14,27 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set up Java Environment
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
       - name: Set up NodeJS Engine
         uses: actions/setup-node@v4
         with:
-          node-size: 18
+          node-version: 18
 
-      - name: Build and Package App Bundle
-        uses: henryhale/android-capacitor@v3
+      - name: Install and Build App File
+        run: |
+          cd web-apps/timer-app
+          npm install
+          npx cap sync
+          cd android
+          ./gradlew assembleDebug
+
+      - name: Upload APK Asset to Actions Timeline
+        uses: actions/upload-artifact@v4
         with:
-          # Targets our exact sub-folder location inside the repository
-          project-dir: 'web-apps/timer-app'
+          name: ChessClockAPK
+          path: web-apps/timer-app/android/app/build/outputs/apk/debug/app-debug.apk

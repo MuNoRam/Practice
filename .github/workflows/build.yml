@@ -11,16 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        # تم التحديث لدعم أحدث بيئات العقدة
+        uses: actions/checkout@v4.2.2 
 
       - name: Set up Java Environment
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
       - name: Set up NodeJS Engine
-        uses: actions/setup-node@v4
+        # تم التحديث لإصدار يتوافق تلقائياً مع بيئات Node الحديثة
+        uses: actions/setup-node@v4.1.0 
         with:
           node-version: '22'
 
@@ -28,17 +30,19 @@ jobs:
         working-directory: "Web Apps/Timer App"
         run: |
           npm install
-          
-          # Force execution parameters by explicitly calling the package module
-          npx --package=@capacitor/cli cap sync
-          
+
+          # منح صلاحيات التشغيل
+          chmod -R +x node_modules/.bin
+
+          # مزامنة الكاباسيتور
+          npx cap sync android
+
           cd android
-          # Grants the server strict execution permissions to compile the final Android project files
           chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload APK Asset to Actions Timeline
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: Timer App 
           path: "Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk"

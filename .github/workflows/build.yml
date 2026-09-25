@@ -11,18 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        # تم التحديث لدعم أحدث بيئات العقدة
-        uses: actions/checkout@v4.2.2 
+        uses: actions/checkout@v4
 
       - name: Set up Java Environment
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '21' # تم رفع الإصدار إلى 21 لحل مشكلة التجميع
 
       - name: Set up NodeJS Engine
-        # تم التحديث لإصدار يتوافق تلقائياً مع بيئات Node الحديثة
-        uses: actions/setup-node@v4.1.0 
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
 
@@ -31,10 +29,10 @@ jobs:
         run: |
           npm install
 
-          # منح صلاحيات التشغيل
+          # منح صلاحيات التشغيل للأدوات
           chmod -R +x node_modules/.bin
 
-          # مزامنة الكاباسيتور
+          # إجراء مزامنة الكاباسيتور
           npx cap sync android
 
           cd android
@@ -42,7 +40,7 @@ jobs:
           ./gradlew assembleDebug
 
       - name: Upload APK Asset to Actions Timeline
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4
         with:
           name: Timer App 
           path: "Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk"

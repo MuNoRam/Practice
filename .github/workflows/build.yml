@@ -1,6 +1,5 @@
 name: Cloud Android Build
 
-# This opens up manual push triggers on the website dashboard
 on:
   workflow_dispatch:
   push:
@@ -23,11 +22,12 @@ jobs:
       - name: Set up NodeJS Engine
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '20'
 
       - name: Install and Build App File
+        # This parameter safely locks the shell context inside your custom folder name
+        working-directory: "Web Apps/Timer App"
         run: |
-          cd Web Apps/Timer App
           npm install
           npx cap sync
           cd android
@@ -37,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Timer App
-          path: Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk
+          path: "Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk"

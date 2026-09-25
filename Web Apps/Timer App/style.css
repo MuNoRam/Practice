@@ -8,25 +8,25 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: #000000;
     color: #ffffff;
     height: 100vh;
-    height: -webkit-fill-available; /* Fixes mobile browser address bar layout jumps */
+    height: -webkit-fill-available; /* Fixes mobile browser address bar height jumps */
     display: flex;
     flex-direction: column;
     overflow: hidden;
     padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0; /* Protects notches */
 }
 
-/* The Clock Button Boxes */
+/* The Clock Button Boxes - Distributed to stretch and take equal space */
 .player-box {
-    flex: 1;
+    flex: 1; /* Automatically stretches to fill available screen height balance */
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 16px;
-    border-radius: 24px;
+    border-radius: 28px;
     background-color: #111111;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
@@ -37,15 +37,15 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 12px;
 }
 
 .player-label {
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    opacity: 0.6;
+    letter-spacing: 3px;
+    opacity: 0.5;
     transition: opacity 0.2s ease;
 }
 
@@ -53,7 +53,7 @@ body {
     opacity: 1;
 }
 
-/* PLAYER 2: Blue Identity */
+/* PLAYER 2: Blue Identity Frame */
 #player2 {
     transform: rotate(180deg);
     border: 4px solid #1e40af;
@@ -61,34 +61,35 @@ body {
 #player2.active {
     background-color: #0f172a;
     border-color: #3b82f6;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 24px rgba(59, 130, 246, 0.35);
 }
 
-/* PLAYER 1: Red Identity */
+/* PLAYER 1: Red Identity Frame */
 #player1 {
     border: 4px solid #991b1b;
 }
 #player1.active {
     background-color: #1a0505;
     border-color: #ef4444;
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 0 24px rgba(239, 68, 68, 0.35);
 }
 
+/* Scaled up Time Text to occupy the box area beautifully */
 .time-display {
-    font-size: clamp(4rem, 15vh, 7rem);
+    font-size: clamp(4.5rem, 10vh, 7.5rem);
     font-weight: 800;
     font-variant-numeric: tabular-nums;
     letter-spacing: -2px;
-    transition: color 0.15s ease;
+    line-height: 1;
 }
 
 /* 🚨 LAST 10 SECONDS EMERGENCY STATE 🚨 */
 .player-box.low-time .time-display {
-    color: #ef4444 !important; /* Forces clock text to bright emergency red */
+    color: #ef4444 !important;
 }
 
 .player-box.active.low-time {
-    animation: criticalPulse 0.5s infinite alternate ease-in-out; /* Fast heartbeat blink */
+    animation: criticalPulse 0.5s infinite alternate ease-in-out;
 }
 
 @keyframes criticalPulse {
@@ -97,51 +98,53 @@ body {
         background-color: #111111;
     }
     to {
-        box-shadow: 0 0 25px rgba(239, 68, 68, 0.7);
-        background-color: #2a0808;
+        box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
+        background-color: #230606;
     }
 }
 
-/* Modern Central Control Stack */
+/* Premium Balanced Central Control Dashboard */
 .control-bar {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    padding: 16px;
+    gap: 16px;
+    padding: 16px 24px;
     background-color: #000000;
     z-index: 10;
     width: 100%;
-    max-width: 380px; 
+    max-width: 420px; /* Aligns controls perfectly centered */
     margin: 0 auto; 
 }
 
-/* Row containing presets and custom input */
+/* Row containing presets and custom input with balanced gaps */
 .config-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 8px;
     width: 100%;
     transition: opacity 0.2s ease;
 }
 
 .config-row.disabled {
-    opacity: 0.2;
+    opacity: 0.15;
     pointer-events: none; 
 }
 
-/* Small square preset pill buttons */
+/* Modern pill format preset selectors */
 .preset-btn {
-    background-color: #222222;
-    color: #aaaaaa;
-    border: 1px solid #444444;
-    padding: 6px 12px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border-radius: 8px;
+    flex: 1; /* Makes every preset button take identical width */
+    background-color: #1a1a1a;
+    color: #a3a3a3;
+    border: 1px solid #2d2d2d;
+    padding: 10px 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.15s ease;
+    text-align: center;
 }
 
 .preset-btn.active-preset {
@@ -150,24 +153,25 @@ body {
     border-color: #ffffff;
 }
 
-/* Custom Number Input Box styling */
+/* Custom Number Input wrapper box matching the layout height */
 .custom-input-wrapper {
     display: flex;
     align-items: center;
-    background-color: #222222;
-    border: 1px solid #444444;
-    border-radius: 8px;
-    padding-right: 8px;
+    justify-content: center;
+    background-color: #1a1a1a;
+    border: 1px solid #2d2d2d;
+    border-radius: 10px;
+    flex: 1.2; /* Slightly wider to easily hold digits and the 'm' label */
+    height: 38px;
 }
 
 .custom-input-wrapper input {
-    width: 45px;
+    width: 60%;
     background: transparent;
     border: none;
     color: #ffffff;
-    padding: 6px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 700;
     text-align: center;
     outline: none;
     -moz-appearance: textfield;
@@ -180,12 +184,13 @@ body {
 }
 
 .custom-input-wrapper span {
-    font-size: 0.8rem;
-    color: #666666;
-    font-weight: bold;
+    font-size: 0.85rem;
+    color: #737373;
+    font-weight: 700;
+    padding-right: 4px;
 }
 
-/* Bottom Main Game Actions */
+/* Bottom Actions Main control split layout */
 .action-row {
     display: flex;
     gap: 16px;
@@ -195,16 +200,20 @@ body {
 
 .btn {
     flex: 1; 
-    max-width: 140px;
-    padding: 12px 24px;
+    padding: 14px 0;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 800;
     border: none;
-    border-radius: 12px;
+    border-radius: 14px;
     cursor: pointer;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     text-align: center;
+    transition: filter 0.15s ease;
+}
+
+.btn:active {
+    filter: brightness(0.85);
 }
 
 .btn-start {
@@ -213,8 +222,9 @@ body {
 }
 
 .btn-reset {
-    background-color: #333333;
-    color: white;
+    background-color: #262626;
+    color: #e5e5e5;
+    border: 1px solid #3f3f46;
 }
 
 /* Game Over Visual Flag State */

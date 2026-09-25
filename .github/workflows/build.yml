@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # إعطاء صلاحيات لإنشاء Release ورسم الملفات
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -17,7 +19,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '21' # تم رفع الإصدار إلى 21 لحل مشكلة التجميع
+          java-version: '21'
 
       - name: Set up NodeJS Engine
         uses: actions/setup-node@v4
@@ -28,19 +30,27 @@ jobs:
         working-directory: "Web Apps/Timer App"
         run: |
           npm install
-
-          # منح صلاحيات التشغيل للأدوات
           chmod -R +x node_modules/.bin
-
-          # إجراء مزامنة الكاباسيتور
           npx cap sync android
-
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
+      # 1. حفظ الملف كـ Artifact (للتنزيل من صفحة Actions)
       - name: Upload APK Asset to Actions Timeline
         uses: actions/upload-artifact@v4
         with:
           name: Timer App 
           path: "Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk"
+
+      # 2. رفع ملف الـ APK مباشرة إلى قسم Releases
+      - name: Create Release and Upload APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }} # إنشاء إصدار جديد برقم تلقائي
+          name: "Release v1.0.${{ github.run_number }}"
+          draft: false
+          prerelease: false
+          files: "Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

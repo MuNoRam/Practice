@@ -198,23 +198,10 @@ body {
     justify-content: center;
 }
 
-/* تحسين أزرار التشغيل والتعديل (START / RESET) */
-.btn {
+/* Base structural rules applied to BOTH action buttons */
+.btn, .btn-start, .btn-reset {
     flex: 1; 
-    padding: 16px 0; /* زيادة الارتفاع لإعطاء مظهر أوضح وأسهل للضغط */
-    font-size: clamp(1rem, 4vw, 1.2rem); /* خط أكبر ومتجاوب */
-    font-weight: 800;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    text-align: center;
-}
-/* Target by ID to guarantee the browser uses the yellow color */
-#startBtn, .btn-start {
-    flex: 1; 
-    padding: 16px 0; 
+    padding: 16px 0; /* Vertical padding to make them tall and comfortable to tap */
     font-size: clamp(1rem, 4vw, 1.2rem); 
     font-weight: 800;
     border: none;
@@ -223,15 +210,28 @@ body {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     text-align: center;
-    background-color: #e4ba00 !important; /* Force browser to display your gold yellow layout tint */
-    color: #ffffff;
+    display: inline-block;
+    width: 100%; /* Ensures they expand outwards to fill the container split */
+    transition: filter 0.15s ease;
 }
 
-.btn-reset {
-    background-color: #262626;
-    color: #e5e5e5;
-    border: 1px solid #3f3f46;
+.btn:active, .btn-start:active, .btn-reset:active {
+    filter: brightness(0.85);
 }
+
+/* Specific styling for the START button */
+#startBtn, .btn-start {
+    background-color: #e4ba00 !important; /* Your custom premium gold-yellow */
+    color: #ffffff !important;
+}
+
+/* Specific styling for the RESET button */
+#resetBtn, .btn-reset {
+    background-color: #262626 !important;
+    color: #e5e5e5 !important;
+    border: 1px solid #3f3f46 !important;
+}
+
 /* Game Over Visual Flag State */
 .player-box.flagged {
     background-color: #7f1d1d !important;

@@ -14,6 +14,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java Environment
+        # Modernized from v4 to v5 to remove the deprecation warning
         uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
@@ -25,11 +26,10 @@ jobs:
           node-version: '22'
 
       - name: Install and Build App File
-        # This parameter safely locks the shell context inside your custom folder name
         working-directory: "Web Apps/Timer App"
         run: |
           npm install
-          npx cap sync
+          npx capacitor sync
           cd android
           ./gradlew assembleDebug
 

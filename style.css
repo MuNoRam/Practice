@@ -1,0 +1,234 @@
+/* Modern Reset and Layout Setup */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none; 
+    -webkit-user-select: none;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    height: 100vh;
+    height: -webkit-fill-available; /* Fixes mobile browser address bar layout jumps */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0; /* Protects notches */
+}
+
+/* The Clock Button Boxes */
+.player-box {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 16px;
+    border-radius: 24px;
+    background-color: #111111;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.box-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.player-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.player-box.active .player-label {
+    opacity: 1;
+}
+
+/* PLAYER 2: Blue Identity */
+#player2 {
+    transform: rotate(180deg);
+    border: 4px solid #1e40af;
+}
+#player2.active {
+    background-color: #0f172a;
+    border-color: #3b82f6;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+/* PLAYER 1: Red Identity */
+#player1 {
+    border: 4px solid #991b1b;
+}
+#player1.active {
+    background-color: #1a0505;
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.time-display {
+    font-size: clamp(4rem, 15vh, 7rem);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -2px;
+    transition: color 0.15s ease;
+}
+
+/* 🚨 LAST 10 SECONDS EMERGENCY STATE 🚨 */
+.player-box.low-time .time-display {
+    color: #ef4444 !important; /* Forces clock text to bright emergency red */
+}
+
+.player-box.active.low-time {
+    animation: criticalPulse 0.5s infinite alternate ease-in-out; /* Fast heartbeat blink */
+}
+
+@keyframes criticalPulse {
+    from {
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        background-color: #111111;
+    }
+    to {
+        box-shadow: 0 0 25px rgba(239, 68, 68, 0.7);
+        background-color: #2a0808;
+    }
+}
+
+/* Modern Central Control Stack */
+.control-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background-color: #000000;
+    z-index: 10;
+    width: 100%;
+    max-width: 380px; 
+    margin: 0 auto; 
+}
+
+/* Row containing presets and custom input */
+.config-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    transition: opacity 0.2s ease;
+}
+
+.config-row.disabled {
+    opacity: 0.2;
+    pointer-events: none; 
+}
+
+/* Small square preset pill buttons */
+.preset-btn {
+    background-color: #222222;
+    color: #aaaaaa;
+    border: 1px solid #444444;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.preset-btn.active-preset {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+/* Custom Number Input Box styling */
+.custom-input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #222222;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    padding-right: 8px;
+}
+
+.custom-input-wrapper input {
+    width: 45px;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    padding: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.custom-input-wrapper input::-webkit-outer-spin-button,
+.custom-input-wrapper input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.custom-input-wrapper span {
+    font-size: 0.8rem;
+    color: #666666;
+    font-weight: bold;
+}
+
+/* Bottom Main Game Actions */
+.action-row {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn {
+    flex: 1; 
+    max-width: 140px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.btn-start {
+    background-color: #2563eb;
+    color: white;
+}
+
+.btn-reset {
+    background-color: #333333;
+    color: white;
+}
+
+/* Game Over Visual Flag State */
+.player-box.flagged {
+    background-color: #7f1d1d !important;
+    border-color: #f87171 !important;
+    animation: pulse 1s infinite alternate;
+}
+
+.player-box.flagged .time-display {
+    color: #ffffff !important;
+}
+
+@keyframes pulse {
+    from { opacity: 1; }
+    to { opacity: 0.7; }
+}

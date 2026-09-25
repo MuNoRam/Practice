@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Optimized viewport configuration for mobile screen locks -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Tournament Chess Clock</title>
+    <!-- Link to external CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- PLAYER 2 BOX (Rotated for the opponent) -->
+    <div id="player2" class="player-box" onclick="handleClockTap(2)">
+        <div class="box-content">
+            <div class="player-label">Player 2</div>
+            <div id="p2Display" class="time-display">05:00</div>
+        </div>
+    </div>
+
+    <!-- MIDDLE CONFIGURATION & CONTROL TOOLBAR -->
+    <div class="control-bar">
+        <!-- Time Configurator Row -->
+        <div class="config-row" id="configRow">
+            <button class="preset-btn" onclick="setTimePreset(1)">1m</button>
+            <button class="preset-btn" onclick="setTimePreset(3)">3m</button>
+            <button class="preset-btn active-preset" id="preset5" onclick="setTimePreset(5)">5m</button>
+            <button class="preset-btn" onclick="setTimePreset(10)">10m</button>
+            <div class="custom-input-wrapper">
+                <input type="number" id="customMins" min="1" max="180" value="5" onchange="handleCustomTimeChange(this.value)">
+                <span>m</span>
+            </div>
+        </div>
+        
+        <!-- Action Buttons Row -->
+        <div class="action-row">
+            <button id="startBtn" class="btn btn-start" onclick="startMatch()">Start</button>
+            <button id="resetBtn" class="btn btn-reset" onclick="resetMatch()">Reset</button>
+        </div>
+    </div>
+
+    <!-- PLAYER 1 BOX (Facing you) -->
+    <div id="player1" class="player-box" onclick="handleClockTap(1)">
+        <div class="box-content">
+            <div class="player-label">Player 1</div>
+            <div id="p1Display" class="time-display">05:00</div>
+        </div>
+    </div>
+
+    <!-- Link to external JavaScript logic -->
+    <script src="logic.js"></script>
+</body>
+</html>

@@ -36,5 +36,5 @@ jobs:
       - name: Upload APK Asset to Actions Timeline
         uses: actions/upload-artifact@v4
         with:
-          name: ChessClockAPK
+          name: Timer App
           path: Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk

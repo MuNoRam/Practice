@@ -14,7 +14,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java Environment
-        # Modernized from v4 to v5 to remove the deprecation warning
         uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
@@ -29,12 +28,17 @@ jobs:
         working-directory: "Web Apps/Timer App"
         run: |
           npm install
-          npx capacitor sync
+          
+          # Force execution parameters by explicitly calling the package module
+          npx --package=@capacitor/cli cap sync
+          
           cd android
+          # Grants the server strict execution permissions to compile the final Android project files
+          chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload APK Asset to Actions Timeline
         uses: actions/upload-artifact@v4
         with:
-          name: Timer App
+          name: Timer App 
           path: "Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk"

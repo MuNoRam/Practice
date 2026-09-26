@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # إعطاء صلاحيات لإنشاء Release ورسم الملفات
+      contents: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -26,28 +26,34 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install and Build App File
+      - name: Install Dependencies and Generate Assets
         working-directory: "Web Apps/Timer App"
         run: |
           npm install
+          # تثبيت أداة الأصول وتوليد الأيقونات داخل بيئة GitHub السريعة
+          npm install -D @capacitor/assets
+          npx @capacitor/assets generate --android
+
+          # منح صلاحيات التشغيل ومزامنة أندرويد
           chmod -R +x node_modules/.bin
           npx cap sync android
+
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      # 1. حفظ الملف كـ Artifact (للتنزيل من صفحة Actions)
+      # حفظ الملف كـ Artifact
       - name: Upload APK Asset to Actions Timeline
         uses: actions/upload-artifact@v4
         with:
           name: Timer App 
           path: "Web Apps/Timer App/android/app/build/outputs/apk/debug/app-debug.apk"
 
-      # 2. رفع ملف الـ APK مباشرة إلى قسم Releases
+      # رفع ملف الـ APK إلى قسم Releases
       - name: Create Release and Upload APK
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.${{ github.run_number }} # إنشاء إصدار جديد برقم تلقائي
+          tag_name: v1.0.${{ github.run_number }}
           name: "Release v1.0.${{ github.run_number }}"
           draft: false
           prerelease: false
